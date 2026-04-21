@@ -1,0 +1,117 @@
+version: "3.8"
+
+services:
+
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: postgresDB
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    networks:
+      - app-net
+
+  eureka-server:
+    image: shubham037/eureka-server
+    ports:
+      - target: 8761
+        published: 8761
+        protocol: tcp
+        mode: host
+    networks:
+      - app-net
+
+  config-server:
+    image: shubham037/config-server
+    environment:
+      EUREKA_URL: http://eureka-server:8761/eureka
+    ports:
+      - target: 8888
+        published: 8888
+        protocol: tcp
+        mode: host
+    networks:
+      - app-net
+
+  cart-service:
+    image: shubham037/cart-service
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/postgresDB
+      DB_USERNAME: user
+      DB_PASSWORD: password
+      EUREKA_URL: http://eureka-server:8761/eureka
+      CONFIG_SERVER_URL: http://config-server:8888
+    deploy:
+      replicas: 1
+    networks:
+      - app-net
+
+  inventory-service:
+    image: shubham037/inventory-service
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/postgresDB
+      DB_USERNAME: user
+      DB_PASSWORD: password
+      EUREKA_URL: http://eureka-server:8761/eureka
+      CONFIG_SERVER_URL: http://config-server:8888
+    deploy:
+      replicas: 1
+    networks:
+      - app-net
+
+  pricing-service:
+    image: shubham037/pricing-service
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/postgresDB
+      DB_USERNAME: user
+      DB_PASSWORD: password
+      EUREKA_URL: http://eureka-server:8761/eureka
+      CONFIG_SERVER_URL: http://config-server:8888
+    deploy:
+      replicas: 1
+    networks:
+      - app-net
+
+  product-catalogue-service:
+    image: shubham037/product-catalogue-service
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/postgresDB
+      DB_USERNAME: user
+      DB_PASSWORD: password
+      EUREKA_URL: http://eureka-server:8761/eureka
+      CONFIG_SERVER_URL: http://config-server:8888
+    deploy:
+      replicas: 1
+    networks:
+      - app-net
+
+  recommendation-service:
+    image: shubham037/recommendation-service
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/postgresDB
+      DB_USERNAME: user
+      DB_PASSWORD: password
+      EUREKA_URL: http://eureka-server:8761/eureka
+      CONFIG_SERVER_URL: http://config-server:8888
+    deploy:
+      replicas: 1
+    networks:
+      - app-net
+
+  api-gateway:
+    image: shubham037/api-gateway
+    environment:
+      EUREKA_URL: http://eureka-server:8761/eureka
+    ports:
+      - target: 8088
+        published: 8088
+        protocol: tcp
+        mode: host
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    driver: overlay
