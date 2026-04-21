@@ -53,12 +53,12 @@ pipeline {
                 bat '''
                 echo Cleaning old containers...
                 docker stack rm ecommerce || exit 0
-		timeout /t 10
+		        ping -n 5 127.0.0.1 > nul
                 '''
             }
         }
 
-        stage('Deploy Using Docker Compose') {
+        stage('Deploy Using Docker Swarm') {
             steps {
                 bat '''
                 echo deploying stack from docker Hub images...
