@@ -14,40 +14,6 @@ pipeline {
             }
         }
 
-        // stage('Build All Services') {
-        //     steps {
-        //         bat '''
-        //         mvn clean package -DskipTests -f Eureka_Server/pom.xml
-        //         mvn clean package -DskipTests -f ConfigServer/pom.xml
-        //         mvn clean package -DskipTests -f APIGateway/pom.xml
-
-        //         mvn clean package -DskipTests -f PRODUCT-CATALOG-SERVICE/pom.xml
-        //         mvn clean package -DskipTests -f INVENTORY-SERVICE/pom.xml
-        //         mvn clean package -DskipTests -f PRICING-SERVICE/pom.xml
-
-        //         mvn clean package -DskipTests -f CART-SERVICE/pom.xml
-        //         mvn clean package -DskipTests -f RECOMMENDATION-SERVICE/pom.xml
-        //         '''
-        //     }
-        // }
-
-        // stage('Docker Build') {
-        //     steps {
-        //         bat '''
-        //         docker build -t eureka-server ./Eureka_Server
-        //         docker build -t config-server ./ConfigServer
-        //         docker build -t api-gateway ./APIGateway
-
-        //         docker build -t product-catalogue-service ./PRODUCT-CATALOG-SERVICE
-        //         docker build -t inventory-service ./INVENTORY-SERVICE
-        //         docker build -t pricing-service ./PRICING-SERVICE
-
-        //         docker build -t cart-service ./CART-SERVICE
-        //         docker build -t recommendation-service ./RECOMMENDATION-SERVICE
-        //         '''
-        //     }
-        // }
-
         stage('Remove Old Stack') {
             steps {
                 bat '''
